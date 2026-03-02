@@ -1,83 +1,83 @@
 # BizTool - Portfolio Case Study
 
-Ce depot public presente le projet sous forme d'etude technique.
-Le code source complet est volontairement prive.
+This public repository presents BizTool as a technical case study.
+The full production source code is intentionally kept private.
 
-## 1) Contexte et objectif produit
+## 1) Product Context and Goal
 
-BizTool cible la gestion de facturation pour independants et petites structures:
-- gestion clients et produits
-- cycle devis -> facture
-- suivi paiements et statuts
+BizTool targets billing workflows for freelancers and small businesses:
+- clients and products management
+- quote-to-invoice lifecycle
+- payments and status tracking
 
-Objectif: fournir une API metier robuste, lisible, testable, et prete a evoluer vers un usage SaaS.
+Goal: deliver a robust, readable, and testable business API, designed to evolve toward SaaS usage.
 
-## 2) Architecture (vue engineering)
+## 2) Architecture (Engineering View)
 
-Architecture en couches:
-- `api/`: routes HTTP et contrats d'entree/sortie
-- `services/`: logique metier (regles devis/factures/paiements)
-- `repositories/`: acces donnees SQLAlchemy
-- `models/` + `schemas/`: modelisation DB + validation Pydantic
-- `core/`: configuration, DB, securite JWT
+Layered architecture:
+- `api/`: HTTP routes and contracts
+- `services/`: business rules (quotes/invoices/payments)
+- `repositories/`: SQLAlchemy data access layer
+- `models/` + `schemas/`: DB modeling + Pydantic validation
+- `core/`: configuration, DB, JWT security
 
-Flux metier type:
-1. Authentification admin JWT
-2. Creation client/produit
-3. Creation devis et calculs montants
-4. Envoi/validation devis
-5. Conversion devis en facture
-6. Paiements partiels/complets et transitions d'etat
+Typical business flow:
+1. Admin JWT authentication
+2. Client/product creation
+3. Quote creation and amount calculations
+4. Quote send/validation
+5. Quote conversion to invoice
+6. Partial/full payments and state transitions
 
-## 3) Securite implementee
+## 3) Implemented Security
 
-- Auth JWT obligatoire sur routes metier
-- `/health` conserve public pour supervision
-- Swagger/OpenAPI aligne avec scheme Bearer
-- Hygiene secrets (`.env` exclu, `.env.example` safe)
-- DB locale (`*.db`) exclue du versioning
+- JWT auth required on business routes
+- `/health` kept public for monitoring
+- Swagger/OpenAPI aligned with Bearer scheme
+- Secret hygiene (`.env` excluded, safe `.env.example`)
+- Local DB files (`*.db`) excluded from version control
 
-## 4) Decisions d'engineering et trade-offs
+## 4) Engineering Decisions and Trade-offs
 
-- SQLAlchemy 2 + couche repository: facilite testabilite et evolution DB
-- Alembic: migrations deterministes pour livraisons propres
-- Validation Pydantic v2: contrats API stricts
-- Separation claire des responsabilites: baisse du couplage
+- SQLAlchemy 2 + repository layer for testability and DB evolution
+- Alembic for deterministic migrations and clean deployments
+- Pydantic v2 validation for strict API contracts
+- Clear separation of responsibilities to reduce coupling
 
-## 5) Qualite logicielle
+## 5) Software Quality
 
-- Tests Pytest sur workflows critiques (devis, factures, paiements, auth)
-- Verification explicite des routes protegees (401 sans token)
-- Historique Git structure (import initial, hardening securite, docs)
-- Base prete pour CI/CD standard
+- Pytest coverage on critical workflows (quotes, invoices, payments, auth)
+- Explicit auth enforcement checks (401 without token)
+- Structured Git history (initial import, security hardening, docs)
+- Solid base for standard CI/CD extension
 
-## 6) Exemples de scenarios couverts
+## 6) Covered Scenarios
 
-- Creation devis en brouillon, envoi puis verrouillage
-- Duplication devis et conversion en facture
-- Paiements successifs et passage `partial` -> `paid`
-- Refus d'acces sans bearer token sur routes metier
+- Draft quote creation, send, and post-send locking
+- Quote duplication and invoice conversion
+- Successive payments and `partial` to `paid` transition
+- Access denial without bearer token on business routes
 
-## 7) Travail realise (responsabilites)
+## 7) Work Delivered (Responsibilities)
 
-- Design et implementation de l'API billing
-- Modelisation metier clients/produits/devis/factures/paiements
-- Enforcement global de l'auth JWT sur routes metier
-- Ecriture/adaptation tests autour des exigences securite
-- Hygiene repo et documentation orientee recrutement
+- API design and implementation for billing domain
+- Business modeling for clients/products/quotes/invoices/payments
+- Global JWT auth enforcement across business routes
+- Test implementation/adaptation for security requirements
+- Repository hygiene and recruiter-focused documentation
 
-## 8) Roadmap technique
+## 8) Technical Roadmap
 
-- SMTP (envoi devis/factures + relances)
-- logs structures JSON + tracing
-- durcissement prod (rate limiting, profils env plus stricts)
-- extension multi-tenant
+- SMTP (quote/invoice sending + reminders)
+- Structured JSON logging + tracing
+- Production hardening (rate limiting, stricter env profiles)
+- Multi-tenant extension
 
 ## Stack
 
 FastAPI, SQLAlchemy 2, Alembic, Pydantic v2, JWT (python-jose), Pytest.
 
-## Acces code complet
+## Full Source Access
 
-Le code integral est conserve en prive.
-Acces possible pour evaluation recruteur/ecole sur demande via le profil GitHub.
+The full codebase is kept private.
+Access can be granted for recruiter/school evaluation upon request via my GitHub profile.
